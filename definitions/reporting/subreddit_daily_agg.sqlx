@@ -1,5 +1,5 @@
 config {
-  type: "incremental",
+  type: "table",
   description: "aggregated data on reddit communities and partitioned by aggregation date for faster performance",
   schema: "demo_optimized_reporting",
   tags: ["reddit", "daily"],
@@ -24,7 +24,7 @@ config {
   }
 }
 
-
+WITH t1 as (
 SELECT 
     subreddit,
     count(comment_id) as total_comments,
@@ -40,4 +40,12 @@ SELECT
     comment_date as agg_date
 FROM ${ref('comments_partitioned')}
 WHERE comment_date = CURRENT_DATE()
-GROUP BY subreddit, agg_date
+GROUP BY subreddit, agg_date)
+
+-- dedupe
+SELECT k.*
+FROM (
+    SELECT ARRAY_AGG(row LIMIT 1)[OFFSET(0)] k 
+    FROM t1 row
+    GROUP BY subreddit, agg_date
+)
