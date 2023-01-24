@@ -59,10 +59,4 @@ SELECT
     CAST(comment_day AS INT64) comment_day
 FROM ${ref('comments_stream')})
 
--- dedupe 
-SELECT k.*
-FROM (
-    SELECT ARRAY_AGG(row LIMIT 1)[OFFSET(0)] k 
-    FROM t1 row
-    GROUP BY comment_id
-)
+${dedupe.run("comment_date")}
