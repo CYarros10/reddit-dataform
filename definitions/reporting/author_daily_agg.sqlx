@@ -13,6 +13,7 @@ config {
     total_positive: "total number of positive comments",
     total_negative: "total number of negative comments",
     total_neutral: "total number of neutral comments",
+    avg_subjectivity_score: "average subjectivity of a user",
     total_subjective: "total number of subjective comments",
     agg_date: "the date for which all of the columns were aggregated"
   },
@@ -36,7 +37,7 @@ SELECT
     sum(neutral) as total_neutral,
     sum(negative) as total_negative,
     round(avg(subjectivity_score),2) as avg_subjectivity_score,
-    sum(subjective) as agg_subjective,
+    sum(subjective) as total_subjective,
     comment_date as agg_date
 FROM ${ref('comments_partitioned')}
 GROUP BY author, agg_date)

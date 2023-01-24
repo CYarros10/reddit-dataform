@@ -14,6 +14,7 @@ config {
     total_negative: "total number of negative comments",
     total_neutral: "total number of neutral comments",
     total_subjective: "total number of subjective comments",
+    avg_subjectivity_score: "average subjectivity of a reddit community",
     agg_date: "the date for which all of the columns were aggregated"
   },
   bigquery: {
