@@ -1,0 +1,8 @@
+{
+  "defaultSchema": "demo_optimized",
+  "assertionSchema": "dataform_assertions",
+  "warehouse": "bigquery",
+  "defaultDatabase": "cy-artifacts",
+  "defaultLocation": "US"
+}
+    

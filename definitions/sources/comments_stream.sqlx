@@ -1,0 +1,7 @@
+config {
+  type: "declaration",
+  database: "cy-artifacts",
+  schema: "reddit_stream",
+  name: "comments_stream",
+  description: "raw comments table"
+}

@@ -1,0 +1,6 @@
+{
+  "name": "dataform-vz-demo-optimized",
+  "dependencies": {
+    "@dataform/core": "2.0.1"
+  }
+}

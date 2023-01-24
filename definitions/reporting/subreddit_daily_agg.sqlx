@@ -1,0 +1,43 @@
+config {
+  type: "incremental",
+  description: "aggregated data on reddit communities and partitioned by aggregation date for faster performance",
+  schema: "demo_optimized_reporting",
+  tags: ["reddit", "daily"],
+  columns: {
+    subreddit: "reddit community",
+    total_comments: "total number of comments",
+    total_words: "total number of words for a subreddit",
+    avg_reading_ease_score: "average reading ease score for a subreddit",
+    avg_sentiment_score: "average sentiment score",
+    total_censored: "total number of censored comments",
+    total_positive: "total number of positive comments",
+    total_negative: "total number of negative comments",
+    total_neutral: "total number of neutral comments",
+    total_subjective: "total number of subjective comments",
+    agg_date: "the date for which all of the columns were aggregated"
+  },
+  bigquery: {
+    partitionBy: "agg_date"
+  },
+  assertions: {
+    uniqueKey: ["subreddit", "agg_date"]
+  }
+}
+
+
+SELECT 
+    subreddit,
+    count(comment_id) as total_comments,
+    sum(total_words) as total_words,
+    round(avg(reading_ease_score),2) as avg_reading_ease_score,
+    round(avg(sentiment_score),2) as avg_sentiment_score,
+    sum(censored) as total_censored,
+    sum(positive) as total_positive,
+    sum(neutral) as total_neutral,
+    sum(negative) as total_negative,
+    round(avg(subjectivity_score),2) as avg_subjectivity_score,
+    sum(subjective) as total_subjective,
+    comment_date as agg_date
+FROM ${ref('comments_partitioned')}
+WHERE comment_date = CURRENT_DATE()
+GROUP BY subreddit, agg_date

@@ -1,0 +1,68 @@
+ config {
+  type: "table",
+  description: "cleaned comments data and partitioned by date for faster performance",
+  schema: "demo_optimized_staging",
+  tags: ["reddit"],
+  columns: {
+    comment_id: "unique id for each comment",
+    subreddit: "which reddit community the comment was posted in",
+    author: "which reddit user commented",
+    comment_text: "the body of text for the comment",
+    total_words: "total number of words in the comment",
+    reading_ease_score: "a float value for comment readability score",
+    reading_ease: "a plain-text english categorization of readability",
+    reading_grade_level: "a plain-text english categorization of readability by school grade level",
+    sentiment_score: "float value for sentiment of comment between -1 and 1",
+    censored: "whether the comment needed to be censored by some process upstream",
+    positive: "one-hot encoding 1 or 0 for positive",
+    neutral: "one-hot encoding 1 or 0 for neutral",
+    negative: "one-hot encoding 1 or 0 for negative",
+    subjectivity_score: "float value for comment subjectivity score",
+    subjective: "one-hot encoding 1 or 0 for subjective",
+    url: "link to the comment on reddit",
+    comment_date: "date timestamp for when the comment was posted",
+    comment_hour: "integer for hour of comment post time",
+    comment_year: "integer for year of comment post time",
+    comment_month: "integer for month of comment post time", 
+    comment_day: "integer for day of comment post time"
+  },
+  bigquery: {
+    partitionBy: "comment_date"
+  },
+  assertions: {
+    uniqueKey: ["comment_id"]
+  }
+}
+
+WITH t1 as (
+SELECT
+    comment_id,
+    subreddit,
+    author,
+    comment_text,
+    CAST(total_words AS INT64) total_words,
+    CAST(reading_ease_score AS FLOAT64) reading_ease_score,
+    reading_ease,
+    reading_grade_level,
+    CAST(sentiment_score AS FLOAT64) sentiment_score,
+    CAST(censored AS INT64) censored,
+    CAST(positive AS INT64) positive,
+    CAST(neutral AS INT64) neutral,
+    CAST(negative AS INT64) negative,
+    CAST(subjectivity_score AS FLOAT64) subjectivity_score,
+    CAST(subjective AS INT64) subjective,
+    url,
+    DATE(comment_date) comment_date,
+    CAST(comment_hour AS INT64) comment_hour,
+    CAST(comment_year AS INT64) comment_year,
+    CAST(comment_month AS INT64) comment_month,
+    CAST(comment_day AS INT64) comment_day
+FROM ${ref('comments_stream')})
+
+-- dedupe 
+SELECT k.*
+FROM (
+    SELECT ARRAY_AGG(row LIMIT 1)[OFFSET(0)] k 
+    FROM t1 row
+    GROUP BY comment_id
+)
