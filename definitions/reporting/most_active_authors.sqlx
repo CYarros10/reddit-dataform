@@ -1,0 +1,19 @@
+config {
+    type: "view",
+    schema: "demo_optimized_reporting",
+    description: "a view of all authors, their comment totals and average sentiment",
+    tags: ["reddit", "all_time"],
+    columns: {
+        author: "the reddit user",
+        total_comments: "the total number of comments from a user since data collection began",
+        avg_sentiment: "the average sentiment of the user since data colleciton began"
+    }
+}
+
+ SELECT 
+    author, 
+    count(comment_id) as total_comments, 
+    round(avg(sentiment_score), 4) as avg_sentiment
+ FROM ${ref('comments_partitioned')}
+ GROUP BY author
+ ORDER BY total_comments DESC

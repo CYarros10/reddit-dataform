@@ -30,7 +30,11 @@
     partitionBy: "comment_date"
   },
   assertions: {
-    uniqueKey: ["comment_id"]
+    uniqueKey: ["comment_id"],
+    nonNull: ["comment_text"],
+    rowConditions: [
+      "total_words > 0"
+    ]
   }
 }
 
@@ -57,6 +61,8 @@ SELECT
     CAST(comment_year AS INT64) comment_year,
     CAST(comment_month AS INT64) comment_month,
     CAST(comment_day AS INT64) comment_day
-FROM ${ref('comments_stream')})
+FROM ${ref('comments_stream')}
+WHERE CAST(total_words AS INT64) > 0)
 
-${dedupe.run("comment_date")}
+
+${common.dedupe("comment_id")}

@@ -43,4 +43,4 @@ FROM ${ref('comments_partitioned')}
 WHERE comment_date = CURRENT_DATE()
 GROUP BY subreddit, agg_date)
 
-${dedupe.run("subreddit, agg_date")}
+${common.dedupe("subreddit, agg_date")}

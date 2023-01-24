@@ -42,4 +42,4 @@ SELECT
 FROM ${ref('comments_partitioned')}
 GROUP BY author, agg_date)
 
-${dedupe.run("author, agg_date")}
+${common.dedupe("author, agg_date")}
