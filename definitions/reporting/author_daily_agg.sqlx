@@ -1,6 +1,6 @@
 config {
   type: "table",
-  description: "aggregated data on reddit users and partitioned by aggregation date for faster performance",
+  description: "aggregated data on twitter users and partitioned by aggregation date for faster performance",
   schema: "demo_optimized_reporting",
   tags: ["reddit","daily"],
   columns: {
