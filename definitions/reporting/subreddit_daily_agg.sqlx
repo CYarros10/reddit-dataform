@@ -1,5 +1,5 @@
 config {
-  type: "table",
+  type: "incremental",
   description: "aggregated data on reddit communities and partitioned by aggregation date for faster performance",
   schema: "demo_optimized_reporting",
   tags: ["reddit", "daily"],
@@ -40,7 +40,7 @@ SELECT
     sum(subjective) as total_subjective,
     comment_date as agg_date
 FROM ${ref('comments_partitioned')}
-WHERE comment_date = CURRENT_DATE()
+${when(incremental(), `WHERE comment_date > (select max(comment_date) from ${self()})`)}
 GROUP BY subreddit, agg_date)
 
-${common.dedupe("subreddit, agg_date")}
+${common.dedupe("t1", "subreddit, agg_date")}

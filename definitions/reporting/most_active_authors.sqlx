@@ -12,8 +12,8 @@ config {
 
  SELECT 
     author, 
-    count(comment_id) as total_comments, 
-    round(avg(sentiment_score), 4) as avg_sentiment
- FROM ${ref('comments_partitioned')}
+    sum(total_comments) as total_comments, 
+    round(avg(avg_sentiment_score), 4) as avg_sentiment
+ FROM ${ref('author_daily_agg')}
  GROUP BY author
  ORDER BY total_comments DESC

@@ -1,7 +1,7 @@
 config {
     type: "view",
     schema: "demo_optimized_reporting",
-    description: "a view of all subreddits, their comment totals and average sentiment",
+    description: "a view of all reddit communtities, their comment totals and average sentiment",
     tags: ["reddit", "all_time"],
     columns: {
         subreddit: "the reddit community",
@@ -12,8 +12,8 @@ config {
 
  SELECT 
     subreddit, 
-    count(comment_id) as total_comments, 
-    round(avg(sentiment_score), 4) as avg_sentiment
- FROM ${ref('comments_partitioned')}
+    sum(total_comments) as total_comments, 
+    round(avg(avg_sentiment_score), 4) as avg_sentiment
+ FROM ${ref('subreddit_daily_agg')}
  GROUP BY subreddit
  ORDER BY total_comments DESC

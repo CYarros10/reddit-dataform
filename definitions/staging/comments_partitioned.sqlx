@@ -65,4 +65,4 @@ FROM ${ref('comments_stream')}
 WHERE CAST(total_words AS INT64) > 0)
 
 
-${common.dedupe("comment_id")}
+${common.dedupe("t1", "comment_id")}
