@@ -15,5 +15,4 @@
 - synced with git
 - metadata definitions added to each table
 - assertions / unit tests added to ensure data validity
-- run caching enabled for cheaper queries
 - javascript functions for modularity
