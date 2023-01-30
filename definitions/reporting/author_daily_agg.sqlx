@@ -18,7 +18,10 @@ config {
     agg_date: "the date for which all of the columns were aggregated"
   },
   bigquery: {
-    partitionBy: "agg_date"
+    partitionBy: "agg_date",
+    labels: {
+      cost_center: "123456"
+    }
   },
   assertions: {
     uniqueKey: ["author", "agg_date"]

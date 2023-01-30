@@ -3,6 +3,11 @@
   "assertionSchema": "dataform_assertions",
   "warehouse": "bigquery",
   "defaultDatabase": "cy-artifacts",
-  "defaultLocation": "US"
+  "defaultLocation": "US",
+  "vars": {
+    "dev": "dev_",
+    "stage": "stage_",
+    "prod": "prod_"
+  }
 }
     

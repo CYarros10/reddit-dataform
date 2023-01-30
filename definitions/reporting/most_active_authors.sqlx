@@ -7,7 +7,12 @@ config {
         author: "the reddit user",
         total_comments: "the total number of comments from a user since data collection began",
         avg_sentiment: "the average sentiment of the user since data colleciton began"
+    },
+    bigquery: {
+    labels: {
+      cost_center: "123456"
     }
+  }
 }
 
  SELECT 

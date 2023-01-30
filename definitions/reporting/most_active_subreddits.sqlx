@@ -7,13 +7,17 @@ config {
         subreddit: "the reddit community",
         total_comments: "the total number of comments within a community since data collection began",
         avg_sentiment: "the average sentiment of the subreddit since data colleciton began"
+    },
+    bigquery: {
+    labels: {
+      cost_center: "123456"
     }
+  }
 }
 
  SELECT 
     subreddit, 
     sum(total_comments) as total_comments, 
-    round(avg(avg_sentiment_score), 4) as avg_sentiment
+    avg(avg_sentiment_score) as avg_sentiment
  FROM ${ref('subreddit_daily_agg')}
  GROUP BY subreddit
- ORDER BY total_comments DESC

@@ -5,7 +5,12 @@ config {
     columns: {
         snapshot_date: "snapshot date",
         total_comments: "total number of comments collected by this point in time"
+    },
+    bigquery: {
+    labels: {
+      cost_center: "123456"
     }
+  }
 }
 
 SELECT CURRENT_DATE() AS snapshot_date, count(comment_id) as total_comments

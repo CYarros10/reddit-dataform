@@ -27,7 +27,10 @@
     comment_day: "integer for day of comment post time"
   },
   bigquery: {
-    partitionBy: "comment_date"
+    partitionBy: "comment_date",
+    labels: {
+      cost_center: "123456"
+    }
   },
   assertions: {
     uniqueKey: ["comment_id"],
@@ -66,3 +69,5 @@ WHERE CAST(total_words AS INT64) > 0)
 
 
 ${common.dedupe("t1", "comment_id")}
+
+
